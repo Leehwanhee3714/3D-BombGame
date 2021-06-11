@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Enermy : MonoBehaviour
 {
+    public AudioSource enermyAudio;
+    public GameObject explosionEffect;
     public Transform target;
-    private Rigidbody rjg;
+    private Rigidbody rig;
     public float speed = 20f;
     private bool scored = false;
 
+    public AudioSource enermyaudio;
+
     void Start()
     {
-        rjg = GetComponent<Rigidbody>();
+        enermyaudio = GetComponent<AudioSource>();
+        rig = GetComponent<Rigidbody>();
         target = GameObject.FindWithTag("Player").transform;
     }
     void Update()
@@ -19,7 +24,7 @@ public class Enermy : MonoBehaviour
         if (Vector3.Distance(target.position, transform.position) < 10f)
         {
             Vector3 trans = target.position - transform.position;
-            rjg.AddForce(trans * speed * Time.deltaTime);
+            rig.AddForce(trans * speed * Time.deltaTime);
         }
     }
 
@@ -27,11 +32,12 @@ public class Enermy : MonoBehaviour
     {
         if (other.tag == "Bullet" && scored == false)
         {
+            enermyaudio.Play();
+            Instantiate(explosionEffect, transform.position, transform.rotation);
             scored = true;
             GameManager.instance.AddScore(1);
             transform.position = new Vector3(Random.Range(-30, 30), 0.5f, Random.Range(-30, 30));
             scored = false;
         }
     }
-
 }

@@ -14,21 +14,18 @@ public class Bullet : MonoBehaviour
     {
         gameObject.SetActive(false);
         playerTrans = GameObject.FindWithTag("Player").transform;
-
     }
     void OnEnable()
     {
-        enableTime = Time.time;    
+        enableTime = Time.time;
     }
-
     void Update()
     {
-        if (Time.time > enableTime + lifeTime)
+        if(Time.time >= enableTime + lifeTime)
         {
             transform.position = poolPosition;
             gameObject.SetActive(false);
-        }
-        else 
+        }else
         {
             transform.Translate(playerTrans.forward * speed * Time.deltaTime);
         }
